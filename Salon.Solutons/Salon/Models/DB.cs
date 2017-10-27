@@ -1,8 +1,8 @@
 using System;
 using MySql.Data.MySqlClient;
-using _Rename;
+using Stylist;
 
-namespace _Rename.Models
+namespace Stylist.Models
 {
     public class DB
     {
@@ -32,7 +32,6 @@ namespace _Rename.Models
         {
             _conn = DB.Connection();
             _cmd = _conn.CreateCommand();
-
             _conn.Open();
             _cmd.CommandText = @query;
         }

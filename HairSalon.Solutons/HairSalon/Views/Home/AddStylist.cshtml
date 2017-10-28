@@ -1,0 +1,17 @@
+@{
+  Layout = "_Layout";
+}
+
+<div class="container">
+  <h3>Salon Stylists</h3>
+  <ul>
+		<form action="/stylist/new" method="post">
+	  	<div class="form-group">
+	      <label for="name">Name</label>
+	      <input id="name" name="name" type="text" class="form-control" autofocus>
+	    </div>
+	  	<button class="btn" type="submit" name="submit-check">Confirm New Stylist</button>
+	  </form>
+    <a href="/"><button class="btn btn-warning" type="button" name="back-stylist">Cancel</button></a>
+  </ul>
+</div>

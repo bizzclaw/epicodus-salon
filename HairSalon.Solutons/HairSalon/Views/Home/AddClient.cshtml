@@ -1,0 +1,30 @@
+@using Salon.Models
+
+@{
+  Layout = "_Layout";
+}
+
+<div class="container">
+  <h3>Add a new client for @Model.GetName()</h3>
+
+  <form action="/client/new/@Model.GetId()" method="post">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" class="form-control" autofocus>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input id="phone" name="phone" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input id="address" name="address" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <input id="notes" name="notes" type="text" class="form-control">
+    </div>
+    <button class="btn" type="submit" name="submit-check">Confirm New Client</button>
+  </form>
+  <a href="/stylists/@Model.GetId()"><button class="btn btn-warning" type="button" name="back-stylist">Cancel</button></a>
+</div>

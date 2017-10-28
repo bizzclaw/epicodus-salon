@@ -1,0 +1,17 @@
+@using Salon.Models
+
+@{
+  Layout = "_Layout";
+}
+
+<div class="container">
+  <h3>@Model.GetName()</h3>
+  <p>Clients:</p>
+  <ul>
+    @foreach (Client client in Model.GetClients())
+    {
+      <li>@client.GetName()</li>
+    }
+  </ul>
+  <a href="/client/add/@Model.GetId()"><button class="btn btn-info" type="button" name="add-stylist">Add Client</button></a>
+</div>

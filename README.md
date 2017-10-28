@@ -1,7 +1,47 @@
 # _Salon Systems_
 Joseph Tomlinson
 
-## Specificiations
+## Descriptions
+MVC Web app that allows a Hair Salon Employee to add/remove new hair stylists and add/remove clients to or from that Stylists.
+
+Information is stored in a MySQL database
+
+## Requirements
+* #### MySQL Server using [MAMP](https://www.mamp.info/en/) or [MySQL Community](https://dev.mysql.com/downloads/mysql/)
+* #### .NET Framework [v1.1](https://download.microsoft.com/download/F/4/F/F4FCB6EC-5F05-4DF8-822C-FF013DF1B17F/dotnet-dev-osx-x64.1.1.4.pkg)
+* #### .NET [runtime](https://download.microsoft.com/download/6/F/B/6FB4F9D2-699B-4A40-A674-B7FF41E0E4D2/dotnet-osx-x64.1.1.4.pkg)
+
+
+
+
+## Instructions
+Clone with git or download as a zip file and extract to a directory on your machine.
+
+##### Sql Setup
+In order to load the proper information into a database, some tables must be created.
+You can create these tables by entering the following MySQL commands into your Sql
+Server
+
+``` Sql
+CREATE DATABASE joseph_tomlinson;
+USE DATABASE joseph_tomlinson;
+
+CREATE TABLE stylists (stylist_id SERIAL, name NVARCHAR(255));
+CREATE TABLE clients (client_id SERIAL, stylist_id INT, name NVARCHAR(255), phone VARCHAR(10), address VARCHAR(255), notes TEXT);
+```
+
+If you wish to perform your own tests, use the following:
+``` Sql
+CREATE DATABASE joseph_tomlinson_tests;
+USE DATABASE joseph_tomlinson_tests;
+
+CREATE TABLE stylists (stylist_id SERIAL, name NVARCHAR(255));
+CREATE TABLE clients (client_id SERIAL, stylist_id INT, name NVARCHAR(255), phone VARCHAR(10), address VARCHAR(255), notes TEXT);
+```
+###### (Pretty much the same thing, except with a database called "test")
+
+## Specifications
+
 
 ________
 | Specification                                                                                  | Example Input                                                                              | Example Result                                                                                                                 |
@@ -14,3 +54,8 @@ ________
 | User can cancel client changes submission.                                                     | User clicks a "cancel submission" button                                                   | The page will reload, refreshing the information from the Database of that client.                                             |
 | Clients will be able to be "removed" from the system                                           | User clicks a "Remove" button from the Stylist's list of clients, or the Client info page. | A popup asking for confirmation will open, confirming the removal will load the Client list with the targetted client removed. |
 ________
+
+##### This app makes use of the following frameworks/libraries:
+* Boostrap
+* Dotnet
+* Jquery

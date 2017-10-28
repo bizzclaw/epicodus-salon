@@ -54,5 +54,38 @@ namespace HairSalon.Models
 			newClient.Execute();
 			SetId((int)newClient.GetCommand().LastInsertedId);
 		}
+
+		public void Delete()
+		{
+			Query deleteClient = new Query("DELETE FROM clients WHERE client_id = @ClientId");
+			deleteClient.AddParameter("@ClientId", GetId().ToString());
+			deleteClient.Execute();
+		}
+
+		public static Client Find(int id)
+        {
+            Query findClient = new Query("SELECT * FROM clients WHERE client_id = @Id");
+            findClient.AddParameter("@Id", id.ToString());
+            var rdr = findClient.Read();
+			int stylistId = 0;
+			string name = "";
+			string phone = "";
+			string address = "";
+			string notes = "";
+
+            while (rdr.Read())
+            {
+				stylistId = rdr.GetInt32(1);
+				name = rdr.GetString(2);
+				phone = rdr.GetString(3);
+				address = rdr.GetString(4);
+				notes = rdr.GetString(5);
+            }
+            Client found = new Client(name, phone, address, notes);
+			found.SetStylistId(stylistId);
+            found.SetId(id);
+            return found;
+        }
+
 	}
 }

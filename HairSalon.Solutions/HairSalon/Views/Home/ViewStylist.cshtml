@@ -10,8 +10,9 @@
   <ul>
     @foreach (Client client in Model.GetClients())
     {
-      <li>@client.GetName()</li>
+      <a href="/Client/@client.GetId()"><button class="btn btn-info name" type="button" name="view-client">@client.GetName()</button></a>
     }
   </ul>
-  <a href="/client/add/@Model.GetId()"><button class="btn btn-info" type="button" name="add-stylist">Add Client</button></a>
+  <a href="/client/add/@Model.GetId()"><button class="btn btn-success" type="button" name="add-client">Add Client</button></a>
+  <a href="/"><button class="btn btn-warning" type="button" name="back">Back</button></a>
 </div>

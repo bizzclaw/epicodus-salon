@@ -1,0 +1,21 @@
+@using HairSalon.Models
+
+@{
+  Layout = "_Layout";
+}
+
+<div class="container">
+  <h2>@Model.GetName()</h2>
+
+  <h4>Phone</h4>
+  <p>@Model.GetPhone()</p>
+
+  <h4>Address</h4>
+  <p>@Model.GetAddress()</p>
+
+  <h4>Notes</h4>
+  <p>@Model.GetNotes()</p>
+
+  <a href="/client/remove/@Model.GetId()"><button class="btn btn-danger" type="button" name="add-client">Remove Client</button></a>
+  <a href="/stylists/@Model.GetStylistId()"><button class="btn btn-warning" type="button" name="back">Back</button></a>
+</div>

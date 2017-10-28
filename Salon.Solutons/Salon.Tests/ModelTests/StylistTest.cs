@@ -8,9 +8,10 @@ namespace Salon.Tests
     [TestClass]
     public class StylistTests
     {
+
         public StylistTests()
         {
-            DB.DatabaseTest();
+            DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=3306;database=joseph_tomlinson_test;";
             Stylist.ClearAll();
             Client.ClearAll();
         }

@@ -27,11 +27,18 @@ namespace HairSalon.Controllers
             return View(clientStylist);
         }
 
-        [HttpGet("/Stylist/{id}")]
+        [HttpGet("/stylist/{id}")]
         public ActionResult ViewStylist(int id)
         {
             return View(Stylist.Find(id));
         }
+
+        [HttpGet("/client/update/{id}")]
+        public ActionResult UpdateClient(int id)
+        {
+            return View(Client.Find(id));
+        }
+
 
         [HttpGet("/Client/{id}")]
         public ActionResult ViewClient(int id)
@@ -60,7 +67,22 @@ namespace HairSalon.Controllers
             return Redirect("/stylist/" + stylistId);
         }
 
-        [HttpGet("/Client/Remove/{id}")]
+        [HttpPost("/client/doupdate/{clientId}")]
+        public ActionResult DoUpdateClient(int clientId)
+        {
+            string name = Request.Form["name"];
+            string phone = Request.Form["phone"];
+            string address = Request.Form["address"];
+            string notes = Request.Form["notes"];
+            Client updateClient = new Client(name, phone, address, notes);
+            updateClient.SetId(clientId);
+
+            updateClient.Update();
+
+            return Redirect("/stylist/" + Client.Find(clientId).GetStylistId());
+        }
+
+        [HttpGet("/Client/remove/{id}")]
         public ActionResult RemoveClient(int id)
         {
             Client removeClient = Client.Find(id);

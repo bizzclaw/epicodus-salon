@@ -47,12 +47,23 @@ namespace HairSalon.Models
 		{
 			Query newClient = new Query("INSERT INTO clients VALUES(NULL, @StylistId, @Name, @Phone, @Address, @Notes)");
 			newClient.AddParameter("@StylistId", stylistId.ToString());
-			newClient.AddParameter("@Name", _name);
-			newClient.AddParameter("@Phone", _phone);
-			newClient.AddParameter("@Address", _address);
-			newClient.AddParameter("@Notes", _notes);
+			newClient.AddParameter("@Name", GetName());
+			newClient.AddParameter("@Phone", GetPhone());
+			newClient.AddParameter("@Address", GetAddress());
+			newClient.AddParameter("@Notes", GetNotes());
 			newClient.Execute();
 			SetId((int)newClient.GetCommand().LastInsertedId);
+		}
+
+		public void Update()
+		{
+			Query updateClient = new Query("UPDATE clients SET name = @Name, phone = @Phone, address = @Address, notes = @Notes WHERE client_id = @ClientId");
+			updateClient.AddParameter("@ClientId", GetId().ToString());
+			updateClient.AddParameter("@Name", GetName());
+			updateClient.AddParameter("@Phone", GetPhone());
+			updateClient.AddParameter("@Address", GetAddress());
+			updateClient.AddParameter("@Notes", GetNotes());
+			updateClient.Execute();
 		}
 
 		public void Delete()

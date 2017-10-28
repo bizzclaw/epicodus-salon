@@ -42,13 +42,15 @@ namespace Salon.Models
             while (rdr.Read())
             {
                 int clientId = rdr.GetInt32(0);
-                string clientName = rdr.GetString(1);
-                string clientPhone = rdr.GetString(2);
-                string clientAddress = rdr.GetString(3);
-                string clientNotes = rdr.GetString(4);
+                int stylistId = rdr.GetInt32(1);
+                string clientName = rdr.GetString(2);
+                string clientPhone = rdr.GetString(3);
+                string clientAddress = rdr.GetString(4);
+                string clientNotes = rdr.GetString(5);
 
                 Client newClient = new Client(clientName, clientPhone, clientAddress, clientNotes);
                 newClient.SetId(clientId);
+                newClient.SetStylistId(stylistId);
                 clientList.Add(newClient);
             }
             return clientList;

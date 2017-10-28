@@ -19,6 +19,20 @@ namespace Salon.Controllers
         {
             return View();
         }
+
+        [HttpGet("/client/add/{stylistId}")]
+        public ActionResult AddClient(int stylistId)
+        {
+            Stylist clientStylist = Stylist.Find(stylistId);
+            return View(clientStylist);
+        }
+
+        [HttpGet("/Stylist/{id}")]
+        public ActionResult ViewStylist(int id)
+        {
+            return View(Stylist.Find(id));
+        }
+
         [HttpPost("/stylist/new")]
         public ActionResult NewStylist()
         {
@@ -26,6 +40,18 @@ namespace Salon.Controllers
             Stylist newStylist = new Stylist(name);
             newStylist.Save();
             return Redirect("/");
+        }
+
+        [HttpPost("/client/new/{stylistId}")]
+        public ActionResult NewClient(int stylistId)
+        {
+            string name = Request.Form["name"];
+            string phone = Request.Form["phone"];
+            string address = Request.Form["address"];
+            string notes = Request.Form["notes"];
+            Client newClient = new Client(name, phone, address, notes);
+            newClient.Save(stylistId);
+            return Redirect("/stylist/" + stylistId);
         }
     }
 }

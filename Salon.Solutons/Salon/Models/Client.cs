@@ -9,6 +9,10 @@ namespace Salon.Models
 		public void SetId(int id) {_id = id;}
 		public int GetId() {return _id;}
 
+		private int _stylistId;
+		public void SetStylistId(int stylistId) {_stylistId = stylistId;}
+		public int GetStylistId() {return _stylistId;}
+
 		private string _name;
 		public void SetName(string name) {_name = name;}
 		public string GetName() {return _name;}
@@ -25,12 +29,30 @@ namespace Salon.Models
 		public void SetNotes(string notes) {_notes = notes;}
 		public string GetNotes() {return _notes;}
 
+		public static void ClearAll()
+		{
+			Query clearClients = new Query("DELETE FROM clients");
+			clearClients.Execute();
+		}
+
 		public Client(string name, string phone, string address, string notes)
 		{
-			_name = name;
-			_phone = phone;
-			_address = address;
-			_notes = notes;
+			SetName(name);
+			SetPhone(phone);
+			SetAddress(address);
+			SetNotes(notes);
+		}
+
+		public void Save(int stylistId)
+		{
+			Query newClient = new Query("INSERT INTO clients VALUES(NULL, @StylistId, @Name, @Phone, @Address, @Notes)");
+			newClient.AddParameter("@StylistId", stylistId.ToString());
+			newClient.AddParameter("@Name", _name);
+			newClient.AddParameter("@Phone", _phone);
+			newClient.AddParameter("@Address", _address);
+			newClient.AddParameter("@Notes", _notes);
+			newClient.Execute();
+			SetId((int)newClient.GetCommand().LastInsertedId);
 		}
 	}
 }

@@ -1,3 +1,16 @@
+@using Salon.Models
+
 @{
   Layout = "_Layout";
 }
+
+<div class="container">
+  <h3>Salon Stylists</h3>
+  <ul>
+    @foreach (Stylist stylist in Model)
+    {
+      <li>@stylist.GetName()</li>
+    }
+    <a href="/stylist/add"><button class="btn btn-info" type="button" name="add-stylist">Add Stylist</button></a>
+  </ul>
+</div>

@@ -1,9 +1,10 @@
 using System;
 using MySql.Data.MySqlClient;
-using Stylist;
+using Salon;
 
-namespace Stylist.Models
+namespace Salon.Models
 {
+
     public class DB
     {
         public static MySqlConnection Connection()
@@ -13,10 +14,19 @@ namespace Stylist.Models
         }
     }
 
-    public class Query
+    public class Query : IDisposable
     {
         private MySqlCommand _cmd;
         private MySqlConnection _conn;
+
+        public void Dispose()
+        {
+            _conn.Close();
+            if (_conn != null)
+            {
+                _conn.Dispose();
+            }
+        }
 
         public MySqlCommand GetCommand()
         {
@@ -39,28 +49,19 @@ namespace Stylist.Models
         public void AddParameter(string key, string value)
         {
             MySqlParameter parameter = new MySqlParameter();
-            parameter.ParameterName = "@"+key;
+            parameter.ParameterName = key;
             parameter.Value = value;
             _cmd.Parameters.Add(parameter);
         }
 
-        public void Update()
+        public void Execute()
         {
             _cmd.ExecuteNonQuery();
-            Close();
         }
         public MySqlDataReader Read()
         {
             MySqlDataReader rdr = _cmd.ExecuteReader() as MySqlDataReader;
             return rdr;
-        }
-        public void Close()
-        {
-            _conn.Close();
-            if (_conn != null)
-            {
-                _conn.Dispose();
-            }
         }
     }
 }

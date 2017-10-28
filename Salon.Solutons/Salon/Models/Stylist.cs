@@ -15,24 +15,83 @@ namespace Salon.Models
         public void SetName(string name) {_name = name;}
         public string GetName() {return _name;}
 
+        public Stylist(string name)
+        {
+            SetName(name);
+        }
+
+        public void Save()
+        {
+            Query newStylist = new Query("INSERT INTO stylists VALUES (NULL, @Name)");
+            newStylist.AddParameter("@Name", GetName());
+            SetId((int)newStylist.GetCommand().LastInsertedId);
+            newStylist.Execute();
+        }
+
+        public void AssignClient(Client client)
+        {
+            client.Save(client.GetId());
+        }
+
         public List<Client> GetClients()
         {
-            clientQuery = new Query("SELECT clients* from stylists JOIN (stylists clients) WHERE stylist_id = @Id");
-            clientQuery.AddParameter("Id", _id);
+            Query clientQuery = new Query("SELECT * from clients WHERE stylist_id = @Id");
+            clientQuery.AddParameter("Id", _id.ToString());
             List<Client> clientList = new List<Client> {};
             var rdr = clientQuery.Read();
             while (rdr.Read())
             {
-                int clientId = rdr.ReadInt32(0);
-                string clientName = rdr.ReadString(1);
-                string clientPhone = rdr.ReadString(2);
-                string clientAddress = rdr.ReadString(3);
-                string clientNotes = rdr.ReadString(4);
+                int clientId = rdr.GetInt32(0);
+                string clientName = rdr.GetString(1);
+                string clientPhone = rdr.GetString(2);
+                string clientAddress = rdr.GetString(3);
+                string clientNotes = rdr.GetString(4);
 
-                Client newClient = new Client(clientId, clientName, clientPhone, clientAddress, clientNotes);
+                Client newClient = new Client(clientName, clientPhone, clientAddress, clientNotes);
+                newClient.SetId(clientId);
                 clientList.Add(newClient);
             }
             return clientList;
         }
+
+        public static Stylist Find(int id)
+        {
+            Query findStylist = new Query("SELECT (name) FROM stylists WHERE stylist_id = @Id");
+            findStylist.AddParameter("@Id", id.ToString());
+            var rdr = findStylist.Read();
+            string name = "";
+
+            while (rdr.Read())
+            {
+                name = rdr.GetString(0);
+            }
+            Stylist found = new Stylist(name);
+            found.SetId(id);
+            return found;
+        }
+
+        public static List<Stylist> GetAll()
+        {
+            Query getStylists = new Query("SELECT * from stylists");
+            List<Stylist> stylistList = new List<Stylist> {};
+            var rdr = getStylists.Read();
+            while (rdr.Read())
+            {
+                int stylistId = rdr.GetInt32(0);
+                string stylistName = rdr.GetString(1);
+
+                Stylist newStylist = new Stylist(stylistName);
+                newStylist.SetId(stylistId);
+                stylistList.Add(newStylist);
+            }
+            return stylistList;
+        }
+
+        public static void ClearAll()
+		{
+			Query clearClients = new Query("DELETE FROM stylists");
+			clearClients.Execute();
+		}
+
     }
 }

@@ -11,45 +11,52 @@ namespace HairSalon.Tests
 
         public StylistTests()
         {
+            // DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=joseph_tomlinson_test;";
             DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=3306;database=joseph_tomlinson_test;";
             Stylist.ClearAll();
             Client.ClearAll();
         }
 
         [TestMethod]
-        public void Save_AddStylistTooDatabase_1()
+        public void SaveAndGetAll_AddStylistTooDatabase_1()
         {
             Stylist testStylist = new Stylist("HasNoClients");
             testStylist.Save();
-            int count = 0;
-            Query databaseCount = new Query("SELECT * FROM stylists");
-            var rdr = databaseCount.Read();
-            while (rdr.Read())
-            {
-                count++;
-            }
-            Assert.AreEqual(1, count);
+
+            List<Stylist> allStylists = Stylist.GetAll();
+            Assert.AreEqual(1, allStylists.Count);
         }
 
         [TestMethod]
-        public void AssignClient_CreateClientAndRelateToStylist_1()
+        public void AssignClientAndGetClients_CreateClientAndRelateToStylist_1()
         {
             Stylist testStylist = new Stylist("Has1Client");
             testStylist.Save();
 
             Client newClient = new Client("Jimmy", "555-555-5555", "1234 NW Place Street", "Likes to keep it short.");
             testStylist.AssignClient(newClient);
+            List<Client> allClients = testStylist.GetClients();
+            Assert.AreEqual(1, allClients.Count);
+        }
 
-            int count = 0;
-            Query databaseCount = new Query("SELECT * FROM CLIENTS where stylist_id = @StylistId");
-            databaseCount.AddParameter("@StylistId", testStylist.GetId().ToString());
+        [TestMethod]
+        public void Find_FindClientInDataBase_true()
+        {
+            Stylist testStylist = new Stylist("Man");
+            testStylist.Save();
+            Stylist findStylist = Stylist.Find(testStylist.GetId());
+            Assert.AreEqual(testStylist.GetName(), findStylist.GetName());
+        }
+        [TestMethod]
+        public void ClearAll_ClearAllStylists_0()
+        {
+            Stylist testStylist = new Stylist("Man");
+            testStylist.Save();
 
-            var rdr = databaseCount.Read();
-            while (rdr.Read())
-            {
-                count++;
-            }
-            Assert.AreEqual(1, count);
+            Stylist.ClearAll();
+
+            List<Stylist> allStylists = Stylist.GetAll();
+            Assert.AreEqual(0, allStylists.Count);
         }
     }
 }

@@ -98,5 +98,24 @@ namespace HairSalon.Models
             return found;
         }
 
+		public static List<Client> GetAll()
+        {
+			List<Client> allClients = new List<Client> {};
+			Query getAllClients = new Query("SELECT * FROM clients");
+			var rdr = getAllClients.Read();
+			while (rdr.Read())
+			{
+				int stylistId = rdr.GetInt32(1);
+				string name = rdr.GetString(2);
+				string phone = rdr.GetString(3);
+				string address = rdr.GetString(4);
+				string notes = rdr.GetString(5);
+				Client client = new Client(name, phone, address, notes);
+				client.SetId(rdr.GetInt32(0));
+
+				allClients.Add(client);
+			}
+			return allClients;
+		}
 	}
 }

@@ -24,13 +24,13 @@ namespace HairSalon.Models
         {
             Query newStylist = new Query("INSERT INTO stylists VALUES (NULL, @Name)");
             newStylist.AddParameter("@Name", GetName());
-            SetId((int)newStylist.GetCommand().LastInsertedId);
             newStylist.Execute();
+            SetId((int)newStylist.GetCommand().LastInsertedId);
         }
 
         public void AssignClient(Client client)
         {
-            client.Save(client.GetId());
+            client.Save(GetId());
         }
 
         public List<Client> GetClients()
